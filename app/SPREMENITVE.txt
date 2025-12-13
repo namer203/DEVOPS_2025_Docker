@@ -1,0 +1,2 @@
+SPREMEMBA V DB.PHP, $user = 'root' -> $user = 'igra_user'
+SPREMEMBA POVSOD KJER JE SESSION -> require_once("init.php");
