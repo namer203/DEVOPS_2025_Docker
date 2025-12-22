@@ -3,6 +3,7 @@ services:
     image: nginx:alpine
     ports:
       - "8080:80"
+      - "8443:443"
     volumes:
       - ./app:/var/www/html
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
@@ -10,9 +11,7 @@ services:
       - php
 
   php:
-    build:
-      context: .
-      dockerfile: ./docker/php/Dockerfile
+    image: ghcr.io/namer203/php-app:latest
     volumes:
       - ./app:/var/www/html
     environment:
@@ -37,14 +36,6 @@ services:
     volumes:
       - redis_data:/data
 
-  grafana:
-    image: grafana/grafana:latest
-    ports:
-      - "3000:3000"
-    volumes:
-      - grafana_data:/var/lib/grafana
-
 volumes:
   db_data:
   redis_data:
-  grafana_data:
