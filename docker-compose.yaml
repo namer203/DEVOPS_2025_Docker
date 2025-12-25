@@ -2,11 +2,13 @@ services:
   nginx:
     image: nginx:alpine
     ports:
-      - "8080:80"
-      - "8443:443"
+      - "80:80"
+      - "443:443"
     volumes:
       - ./app:/var/www/html
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./certbot/www:/var/www/certbot
+      - ./certbot/conf:/etc/letsencrypt
     depends_on:
       - php
 
@@ -36,6 +38,15 @@ services:
     volumes:
       - redis_data:/data
 
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    command: certonly --webroot -w /var/www/certbot --force-renewal --email likar.vavken.tjas@gmail.com -d devopsdocker.top --agree-tos
+
 volumes:
   db_data:
   redis_data:
+  certbot_conf:
+  certbot_www:

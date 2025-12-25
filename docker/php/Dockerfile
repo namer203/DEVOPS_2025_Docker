@@ -18,17 +18,8 @@ RUN docker-php-ext-install intl pdo pdo_mysql zip
 # Install Redis
 RUN pecl install redis && docker-php-ext-enable redis
 
-# Copy Composer binary
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
 # Set working directory
 WORKDIR /var/www/html
-
-# Copy only composer files first (for caching)
-COPY app/composer.json app/composer.lock ./
-
-# Install dependencies
-RUN composer install --no-dev --optimize-autoloader
 
 # Copy app code
 COPY app/ .
